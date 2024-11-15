@@ -1,0 +1,1 @@
+# APIRest SGC (Sistema de Gestión Contable) hecho con NodeJS, Express y PostgreSQL
