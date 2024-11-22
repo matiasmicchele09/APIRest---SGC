@@ -1,7 +1,25 @@
 //* este archivo, index, arranca nuestro proyecto
-import express from 'express';
+import app from './app.js'
 import { PORT } from './config.js';
-const app = express();
+import UserRoutes  from './routes/users.routes.js'
+import { sequelize } from './database/db.js';
 
-app.listen(PORT)
-console.log('Server on port', PORT);
+//app.use(UserRoutes);
+
+async function main(){
+    try {
+        //*Esto es solo para probar la conexión
+        /*await sequelize.authenticate();
+        console.log('Connection has been established successfully.');*/
+
+        //*Hacemos sincronización con la BD
+        await sequelize.sync({force: true}); //* Con el force en true recreo las tablas. Ahora lo pongo en false para que no las recree cada vez que hago "save" al código
+        app.listen(PORT)
+        console.log('Server on port', PORT);
+      } catch (error) {
+        console.error('Unable to connect to the database:', error);
+      }    
+}
+
+main();
+
