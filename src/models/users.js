@@ -28,4 +28,5 @@ Roles.hasOne(Users,{
     foreignKey: 'id_rol',
     sourceKey: 'id_rol'
 })
-//Users.belongsTo(Roles)
+// Users.belongsTo(Roles,{
+//          foreignKey: 'id_rol',})

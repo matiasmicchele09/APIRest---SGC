@@ -13,7 +13,7 @@ async function main(){
         console.log('Connection has been established successfully.');*/
 
         //*Hacemos sincronización con la BD
-        await sequelize.sync({force: true}); //* Con el force en true recreo las tablas. Ahora lo pongo en false para que no las recree cada vez que hago "save" al código
+        await sequelize.sync({force: false}); //* Con el force en true recreo las tablas. Ahora lo pongo en false para que no las recree cada vez que hago "save" al código
         app.listen(PORT)
         console.log('Server on port', PORT);
       } catch (error) {
