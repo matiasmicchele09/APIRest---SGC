@@ -1,5 +1,20 @@
 import { Users } from "../models/users.js";
 
+export const createUsers = async (req, res) =>{
+    const {email, password, id_rol } = req.body;    
+    try {
+        const newUser = await Users.create({        
+            email: email,
+            password: password,
+            id_rol: id_rol
+        })
+        res.send('Creando Usuarios')
+        res.json(newUser);        
+    } catch (error) {
+        return res.status(500).json({message: error.message})        
+    }    
+}
+
 export const getUsers = async (req, res) => {
     try {
         //Genero un arreglo de usuarios y lo envío al cliente    
@@ -27,22 +42,6 @@ export const getUser = async (req, res) => {
     } catch (error) {
         return res.status(500).json({message: error.message})        
     }
-}
-
-export const createUsers = async (req, res) =>{
-    const {email, password, id_rol } = req.body;
-    
-    try {
-        const newUser = await Users.create({        
-            email: email,
-            password: password,
-            id_rol: id_rol
-        })
-        res.send('Creando Usuarios')
-        res.json(newUser);        
-    } catch (error) {
-        return res.status(500).json({message: error.message})        
-    }    
 }
 
 export const updateUser = async(req, res) =>{
@@ -80,5 +79,20 @@ export const deleteUser = async(req, res) =>{
         res.sendStatus(204);        
     } catch (error) {
         return res.status(500).json({message: error.message})                        
+    }
+}
+
+export const getUserByRol = async(req, res) =>{
+    const {id} = req.params;
+    try {        
+        const user = await Users.findAll({
+            where:{
+                id_rol: id 
+            }
+        })
+        if (!user) return res.status(404).json({message: 'User does not exist'})
+        res.json(user)        
+    } catch (error) {
+        return res.status(500).json({message: error.message})        
     }
 }
