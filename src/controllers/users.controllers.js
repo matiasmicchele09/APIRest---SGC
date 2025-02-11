@@ -96,3 +96,19 @@ export const getUserByRol = async(req, res) =>{
         return res.status(500).json({message: error.message})        
     }
 }
+
+export const getUserLogIn = async(req, res) =>{
+    const {email, pass} = req.body;
+    try {
+        const user = await Users.findOne({
+            where:{
+                email: email,
+                password: pass
+            }
+        })
+        if (!user) return res.status(404).json({message: 'User does not exist'})
+        res.json(user)        
+    } catch (error) {
+        return res.status(500).json({message: error.message})
+    }
+}
