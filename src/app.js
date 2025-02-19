@@ -1,7 +1,7 @@
 import express from 'express';
 import usersRoutes from './routes/users.routes.js'
 import rolesRoutes from './routes/roles.routes.js'
-const cors = require('cors');
+import cors from 'cors';
 
 const app = express();
 

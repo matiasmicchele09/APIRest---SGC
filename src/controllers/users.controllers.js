@@ -106,7 +106,7 @@ export const getUserLogIn = async(req, res) =>{
                 password: pass
             }
         })
-        if (!user) return res.status(404).json({message: 'User does not exist'})
+        if (!user) return res.status(404).json({message: 'El usuario no existe'})
         res.json(user)        
     } catch (error) {
         return res.status(500).json({message: error.message})
