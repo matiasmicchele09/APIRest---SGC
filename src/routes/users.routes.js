@@ -1,16 +1,17 @@
 //* el .routes es para encontrar este archivo mas rapido, pero simplemente podría llamarse users.js
-import { Router } from 'express';
+import { Router } from 'express'
 import { getUsers, getUser, createUsers, updateUser, deleteUser, getUserByRol, getUserLogIn } from '../controllers/users.controllers.js'
-const router = Router();
+const router = Router()
 
-router.get('/users',getUsers)
+router.get('/users', getUsers)
 router.get('/users/:id', getUser)
 router.post('/login', getUserLogIn)
-router.post('/users', createUsers);
-router.put('/users/:id', updateUser);
-router.delete('/users/:id', deleteUser);
-router.get("/users/rol/:id", getUserByRol)
-export default router;
+//router.post('/register', getUserLogIn)
+router.post('/users', createUsers)
+router.put('/users/:id', updateUser)
+router.delete('/users/:id', deleteUser)
+router.get('/users/rol/:id', getUserByRol)
+export default router
 
 // router.get('/users', (req,res)=>{
 //     res.send('Obteniendo usuarios')
@@ -32,5 +33,3 @@ export default router;
 //     const {id} = req.params;
 //     res.send('Eliminando un usuario' + id)
 // })
-
-

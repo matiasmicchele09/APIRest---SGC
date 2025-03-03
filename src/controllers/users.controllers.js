@@ -1,14 +1,22 @@
 import { Users } from "../models/users.js";
+import { SALT_ROUNDS } from "../config.js";
+import bcrypt from 'bcrypt';
 
 export const createUsers = async (req, res) =>{
-    const {email, password, id_rol } = req.body;    
+    const {email, password, id_rol } = req.body;   
+    console.log(password);
+
+    
+    //const hashPassword = bcrypt.hashSync(password, SALT_ROUNDS); // el hashSync -> bloquea el código hasta que termine de hashear la contraseña
+    //porque bloquea el thread principal, por eso se usa el hash, que es asincrónico y que por lo tanto, funciona con una promesa
+    const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
     try {
         const newUser = await Users.create({        
             email: email,
-            password: password,
+            password: hashPassword,
             id_rol: id_rol
         })
-        res.send('Creando Usuarios')
+        //res.send('Creando Usuarios')
         res.json(newUser);        
     } catch (error) {
         return res.status(500).json({message: error.message})        
@@ -106,7 +114,7 @@ export const getUserLogIn = async(req, res) =>{
                 password: pass
             }
         })
-        if (!user) return res.status(404).json({message: 'El usuario no existe'})
+        if (!user) return res.status(404).json({message: 'Usuario y/o contraseña incorrectos'})
         res.json(user)        
     } catch (error) {
         return res.status(500).json({message: error.message})
