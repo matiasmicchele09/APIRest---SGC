@@ -10,7 +10,8 @@ export const Users = sequelize.define('users',{
         autoIncrement: true,  
     },
     email: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        // primaryKey: true,
     },
     password:{
         type: DataTypes.STRING

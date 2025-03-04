@@ -1,11 +1,21 @@
 import { Users } from "../models/users.js";
-import { SALT_ROUNDS } from "../config.js";
+import { SALT_ROUNDS, SECRET_JWT_KEY } from "../config.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 
 export const createUsers = async (req, res) =>{
     const {email, password, id_rol } = req.body;   
-    console.log(password);
+    
+    // emailValidation(email);
+    // passwordValidation(password);
+    const user = await Users.findOne({
+        where:{
+            email: email,
+            // password: pass
+        }})
 
+    if (user) return res.status(409).json({message: 'User already exists'})
     
     //const hashPassword = bcrypt.hashSync(password, SALT_ROUNDS); // el hashSync -> bloquea el código hasta que termine de hashear la contraseña
     //porque bloquea el thread principal, por eso se usa el hash, que es asincrónico y que por lo tanto, funciona con una promesa
@@ -35,20 +45,31 @@ export const getUsers = async (req, res) => {
 }
 
 export const getUser = async (req, res) => {    
+
+    const { user }= req.session; //tomamos el user al quue le pusimos la info en el middleware de app.js, req.session.user = data;
+    // const token = req.cookies.access_token; 
+    // if (!token) return res.status(401).json({message: 'Unauthorized'})  
+    if (!user) return res.status(401).json({message: 'Unauthorized'})  
+    
     const {id} = req.params;
     try {
         //const user = await Users.findByPk(id);
         //Ahora lo hacemos con findOne para ver como funciona, pero con findByPk estaba bien
         //la diferencia entre ambos es que findOne te permite buscar por otros campos, findByPk solo por la pk
+
+        // const data = jwt.verify(token, SECRET_JWT_KEY); 
+        console.log(user);        
         const user = await Users.findOne({
             where:{
                 id_user: id 
             }
         })
         if (!user) return res.status(404).json({message: 'User does not exist'})
-        res.json(user)        
+        const {password, ...userData} = user.dataValues;
+        res.json(userData)        
     } catch (error) {
-        return res.status(500).json({message: error.message})        
+        //return res.status(500).json({message: error.message})        
+        if (!token) return res.status(401).json({message: 'Unauthorized'})  
     }
 }
 
@@ -107,16 +128,44 @@ export const getUserByRol = async(req, res) =>{
 
 export const getUserLogIn = async(req, res) =>{
     const {email, pass} = req.body;
+    console.log(req.body)
+    console.log(email, pass)
+
     try {
         const user = await Users.findOne({
             where:{
                 email: email,
-                password: pass
+                // password: pass. busco solo por email, ya que validé que el email sea único
             }
+        })        
+        const isValid = await bcrypt.compare(pass, user.password);
+        //No desencripta la pass del user, sino que encrypta la pass que le pasamos y la compara con la pass encriptada que tiene el user
+        if (!user) return res.status(404).json({message: 'Usuario no existe'})
+        if (!isValid) return res.status(401).json({message: 'Usuario y/o contraseña incorrectos'})
+
+        //En la firma (sign) del token, guardo la información que quiero que tenga el token
+        //El SECRECT_KEY lo guardo en un archivo .env, para que no se vea en el código
+        const token = jwt.sign({
+            id: user.id_user,
+            email: user.email,
+            id_rol: user.id_rol
+        }, SECRET_JWT_KEY, {expiresIn: '1h'});
+
+        const {password, ...userData} = user.dataValues;
+        res.cookie('access_token', token, {
+            httpOnly: true, //Solo se puede acceder al token desde el servidor, no vas a poder acceder al token desde el cliente (javascript)
+            secure: process.env.NODE_ENV === 'production' ? true : false, //Solo se puede acceder al token si la conexión es segura (https)
+            sameSite: 'strict', //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
+            maxAge: 1000 * 60 * 60 //la cookie solo tiene validez por una hora
         })
-        if (!user) return res.status(404).json({message: 'Usuario y/o contraseña incorrectos'})
-        res.json(user)        
+        res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass        
+        
+
     } catch (error) {
         return res.status(500).json({message: error.message})
     }
+}
+export const logOut = async(req, res) =>{
+    res.clearCookie('access_token');
+    res.json({message: 'Logged out'})
 }
