@@ -30,7 +30,7 @@ export const createUsers = async (req, res) =>{
     }    
 }
 
-export const getUserLogIn = async(req, res) =>{
+export const login = async(req, res) =>{
     const {email, pass} = req.body;
     console.log(req.body)
     console.log(email, pass)
@@ -52,7 +52,9 @@ export const getUserLogIn = async(req, res) =>{
         const token = jwt.sign({
             id: user.id_user,
             email: user.email,
-            id_rol: user.id_rol
+            id_rol: user.id_rol,
+            apellido: user.apellido,
+            nombre: user.nombre
         }, SECRET_JWT_KEY, {expiresIn: '1h'});
 
         const {password, ...userData} = user.dataValues;
@@ -69,14 +71,14 @@ export const getUserLogIn = async(req, res) =>{
         return res.status(500).json({message: error.message})
     }
 }
+
 export const getUser = async (req, res) => {    
     
     const { user }= req.session; //tomamos el user al quue le pusimos la info en el middleware de app.js, req.session.user = data;
     // const token = req.cookies.access_token; 
     // if (!token) return res.status(401).json({message: 'Unauthorized'})  
-    if (!user) return res.status(401).json({message: 'Unauthorized'})      
+    if (!user) return res.status(401).json({message: 'Unauthorized'})          
     
-    console.log("user.id", user.id);   
     try {
         //const user = await Users.findByPk(id);
         //Ahora lo hacemos con findOne para ver como funciona, pero con findByPk estaba bien
@@ -89,11 +91,11 @@ export const getUser = async (req, res) => {
             }
         })
         if (!userFound) return res.status(404).json({message: 'User does not exist'})
-        const {password, ...userData} = userFound.dataValues;
+        const {password, ...userData} = userFound.dataValues;    
         res.json(userData)        
     } catch (error) {
         //return res.status(500).json({message: error.message})        
-        if (!user) return res.status(401).json({message: 'Unauthorized'})  
+        if (!user) return res.status(500).json({message: 'Internal server error'})  
     }
 }
 

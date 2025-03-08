@@ -19,6 +19,12 @@ export const Users = sequelize.define('users',{
     id_rol:{
         type: DataTypes.INTEGER
     },
+    apellido:{
+        type: DataTypes.STRING
+    },
+    nombre:{
+        type: DataTypes.STRING
+    },
 },{
     timestamps: false
   }
