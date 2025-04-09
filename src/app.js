@@ -2,11 +2,15 @@ import express from 'express';
 import usersRoutes from './routes/users.routes.js'
 import rolesRoutes from './routes/roles.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import customerRoutes from './routes/customers.routes.js' 
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { validationToken } from './middlewares/validationToken.js';
+import associations from './models/associations.js';
 const app = express();
 
+//*Llama a la función de asociaciones para establecer las relaciones entre los modelos 
+associations();  
 //* Middlewares
 
 app.use(cors({
@@ -36,5 +40,6 @@ app.use(authRoutes);
 
 app.use(usersRoutes);
 app.use(rolesRoutes);
+app.use(customerRoutes);
 
 export default app;

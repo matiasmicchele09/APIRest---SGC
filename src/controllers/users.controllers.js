@@ -32,17 +32,18 @@ export const createUsers = async (req, res) =>{
 
 export const login = async(req, res) =>{
     const {email, pass} = req.body;
-    
+    console.log(email, pass);
     try {
         const user = await Users.findOne({
             where:{
-                email: email,
-                // password: pass. busco solo por email, ya que validé que el email sea único
+                email: email,                
             }
         })        
-        const isValid = await bcrypt.compare(pass, user.password);
-        //No desencripta la pass del user, sino que encrypta la pass que le pasamos y la compara con la pass encriptada que tiene el user
+        
         if (!user) return res.status(404).json({message: 'Usuario no existe'})
+        
+        //No desencripta la pass del user, sino que encrypta la pass que le pasamos y la compara con la pass encriptada que tiene el user
+        const isValid = await bcrypt.compare(pass, user.password);
         if (!isValid) return res.status(401).json({message: 'Usuario y/o contraseña incorrectos'})
 
         //En la firma (sign) del token, guardo la información que quiero que tenga el token

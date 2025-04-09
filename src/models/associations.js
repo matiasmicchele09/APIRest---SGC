@@ -8,32 +8,30 @@ import { Roles }from './roles.js'
 import { Provinces } from './provinces.js';
 import { Customers } from './customers.js';
 
+export default function associations() {
+    
+
 Users.belongsTo(Roles, 
     { 
         foreignKey: 'id_rol',
-        targetKey: 'id'
+        targetKey: 'id_rol'
     }
 );
 
-
-Users.belongsTo(Customers, 
+Customers.belongsTo(Users, 
     { 
-        foreignKey: 'id_club', 
-        targetKey: 'id' 
+        foreignKey: 'id_user', 
+        targetKey: 'id_user' 
     }
 );
 
-ClubModel.hasMany(UserModel,
-    {
-        foreignKey: 'id_club',
-        sourceKey: 'id'
-    }
-);
+// ClubModel.hasMany(UserModel,
+//     {
+//         foreignKey: 'id_club',
+//         sourceKey: 'id'
+//     }
+// );
     
 // y si ClubModel.hasMany(UserModel) también, agregalo aquí
 
-export {
-  UserModel,
-  RolModel,
-  ClubModel,
-};
+}

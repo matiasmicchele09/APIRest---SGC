@@ -25,6 +25,9 @@ export const Customers = sequelize.define('customers',{
     },
     city:{
         type: DataTypes.STRING
+    },
+    id_user:{
+        type: DataTypes.INTEGER
     },    
 },{
     timestamps: false
