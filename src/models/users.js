@@ -19,10 +19,10 @@ export const Users = sequelize.define('users',{
     id_rol:{
         type: DataTypes.INTEGER
     },
-    apellido:{
+    surname:{
         type: DataTypes.STRING
     },
-    nombre:{
+    name:{
         type: DataTypes.STRING
     },
 },{
@@ -31,9 +31,9 @@ export const Users = sequelize.define('users',{
 );
 
 //* Agrego relación clave foránea a la tabla Users.
-Roles.hasOne(Users,{
-    foreignKey: 'id_rol',
-    sourceKey: 'id_rol'
-})
+// Roles.hasOne(Users,{
+//     foreignKey: 'id_rol',
+//     sourceKey: 'id_rol'
+// })
 // Users.belongsTo(Roles,{
 //          foreignKey: 'id_rol',})

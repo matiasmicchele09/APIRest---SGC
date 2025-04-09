@@ -8,7 +8,7 @@ const router = Router()
 router.get('/users', getUsers);
 router.get('/users/:id', getUser);
 router.get('/users/rol/:id', getUserByRol);
-router.get('/validateSession', validationToken); //Valida si la session esta activa desde el front
+router.get('/validateSession', validationToken); //Valida si la session esta activa desde el front, esto lo uso en el guard de angular
 
 //POST
 router.post('/users', createUsers);

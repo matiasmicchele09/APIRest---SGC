@@ -4,13 +4,13 @@ import { Users } from './users.js';
 
 
 //Users ponele que sería el esquema
-export const Roles = sequelize.define('roles',{
-    id_rol:{
+export const Provinces = sequelize.define('provinces',{
+    id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,  
     },
-    description: {
+    name: {
         type: DataTypes.STRING
     }
 },{

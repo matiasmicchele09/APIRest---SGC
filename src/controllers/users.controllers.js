@@ -113,8 +113,6 @@ export const getUsers = async (req, res) => {
     }
 }
 
-
-
 export const updateUser = async(req, res) =>{
     const {id} = req.params;
     const {email, password, id_rol} = req.body;

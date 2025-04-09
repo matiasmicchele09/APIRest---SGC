@@ -31,7 +31,9 @@ app.use(cookieParser());
 app.use(authRoutes);
 
 //*Middleware para verificar el token para las rutas de la aplicacion
-app.use(validationToken);
+//app.use(validationToken); //07/04/2025-Lo tengo comentado porque no hace falta que este aca, al tener el guard en el front ya tengo las rutas protegidas. 
+//Al menos para /home. Si dejo descomentado esto me verifica 2 veces la sesion, una en el front y otra en el back. 
+
 app.use(usersRoutes);
 app.use(rolesRoutes);
 
