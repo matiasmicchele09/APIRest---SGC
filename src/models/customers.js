@@ -34,6 +34,6 @@ export const Customers = sequelize.define('customers',{
   }
 
 
-  //la provincia seruía una foreign key a la tabla provincias, pero no la tengo creada, por eso lo comento 
 );
+  //la provincia seruía una foreign key a la tabla provincias, pero no la tengo creada, por eso lo comento 
 
