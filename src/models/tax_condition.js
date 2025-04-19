@@ -1,18 +1,17 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/db.js'
-import { Users } from './users.js';
 
-export const Provinces = sequelize.define('provinces',{
+export const Tax_Condition = sequelize.define('tax_condition',{
     id:{
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,  
+        primaryKey: true,  
     },
-    name: {
+    description: {
         type: DataTypes.STRING
-    }
+    },
 },{
     timestamps: false
   }
 );
+  
 

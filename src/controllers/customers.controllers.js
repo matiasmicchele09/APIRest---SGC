@@ -1,17 +1,14 @@
 import { Customers } from "../models/customers.js";
 
-export const getAll = async (req, res) => {
-    //console.log(req);
-    const{id_user} = req.query.id_user
+export const getAll = async (req, res) => {    
+    const id_user = parseInt(req.query.id_user)
     console.log(req.query.id_user);
     try {
         const customers = await Customers.findAll({
             where:{
-                id_user: id_user,
-                // password: pass
+                id_user: id_user
             }});
-        res.json(customers)
-        //console.log(customers)        
+        res.json(customers)        
     } catch (error) {
         return res.status(500).json({message: error.message})
     }

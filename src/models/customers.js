@@ -26,9 +26,24 @@ export const Customers = sequelize.define('customers',{
     city:{
         type: DataTypes.STRING
     },
+    tax_code:{
+        type: DataTypes.STRING
+    },    
     id_user:{
         type: DataTypes.INTEGER
-    },    
+    },   
+    activity:{
+        type: DataTypes.STRING
+    },
+    cuit:{
+        type: DataTypes.STRING
+    },
+    id_tax_condition:{
+        type: DataTypes.INTEGER
+    },
+    id_province:{
+        type: DataTypes.INTEGER
+    },
 },{
     timestamps: false
   }

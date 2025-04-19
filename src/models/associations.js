@@ -7,9 +7,9 @@ import { Users } from './users.js'
 import { Roles }from './roles.js'
 import { Provinces } from './provinces.js';
 import { Customers } from './customers.js';
+import { Tax_Condition } from './tax_condition.js';
 
-export default function associations() {
-    
+export default function associations() {    
 
 Users.belongsTo(Roles, 
     { 
@@ -22,6 +22,19 @@ Customers.belongsTo(Users,
     { 
         foreignKey: 'id_user', 
         targetKey: 'id_user' 
+    }
+);
+
+Customers.belongsTo(Provinces,
+    { 
+        foreignKey: 'id_province', 
+        targetKey: 'id' 
+    }
+);
+Customers.belongsTo(Tax_Condition,
+    { 
+        foreignKey: 'id_tax_condition', 
+        targetKey: 'id' 
     }
 );
 
