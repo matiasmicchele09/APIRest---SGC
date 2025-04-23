@@ -14,6 +14,8 @@ async function main(){
 
         //*Hacemos sincronización con la BD
         await sequelize.sync({force: false}); //* Con el force en true recreo las tablas. Ahora lo pongo en false para que no las recree cada vez que hago "save" al código
+        //await sequelize.sync({ alter: true }); para que me haga los cambios que faltan en la base de datos.
+
         app.listen(PORT)
         console.log('Server on port', PORT);
       } catch (error) {

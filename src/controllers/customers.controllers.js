@@ -2,7 +2,7 @@ import { Customers } from "../models/customers.js";
 
 export const getAll = async (req, res) => {    
     const id_user = parseInt(req.query.id_user)
-    console.log(req.query.id_user);
+    //console.log(req.query.id_user);
     try {
         const customers = await Customers.findAll({
             where:{
@@ -15,19 +15,62 @@ export const getAll = async (req, res) => {
 }   
 
 export const createCustomers = async (req, res) => {
-    const { name, email, phone, address, city, surname, activity, cuit } = req.body;
+        
+    const { name, email, phone, address, city, surname, activity, cuit, active, created_at,
+        deactivated_at, id_user, id_tax_condition, id_province, tax_key } = req.body;
     try {
         const newCustomer = await Customers.create({
-            name,
-            email,
-            phone,
+            active, 
+            activity,
             address,
             city,
+            created_at,
+            cuit,
+            deactivated_at,
+            email,
+            id_province,
+            id_tax_condition,
+            id_user,
+            name,
+            phone,
             surname,
-            activity,
-            cuit
+            tax_key
         });
         res.json(newCustomer);
+    } catch (error) {
+        return res.status(500).json({message: error.message})
+    }
+}
+
+export const updateCustomers = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, phone, address, city, surname, activity, cuit, active, created_at,
+        deactivated_at, id_user, id_tax_condition, id_province, tax_key } = req.body;
+    try {
+        const customer = await Customers.findByPk(id);
+        if (!customer) return res.status(404).json({message: 'Customer not found'})
+        await Customers.update({
+            active, 
+            activity,
+            address,
+            city,
+            created_at,
+            cuit,
+            deactivated_at,
+            email,
+            id_province,
+            id_tax_condition,
+            id_user,
+            name,
+            phone,
+            surname,
+            tax_key
+        }, {
+            where: {
+                id: id
+            }
+        });
+        res.json({message: 'Customer updated'});
     } catch (error) {
         return res.status(500).json({message: error.message})
     }

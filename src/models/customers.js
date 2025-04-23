@@ -11,6 +11,18 @@ export const Customers = sequelize.define('customers',{
     name: {
         type: DataTypes.STRING
     },
+    active:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    created_at:{
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }, 
+    deactivated_at:{
+        type: DataTypes.DATE,
+        defaultValue: null
+    },
     surname:{
         type: DataTypes.STRING
     },
@@ -26,7 +38,7 @@ export const Customers = sequelize.define('customers',{
     city:{
         type: DataTypes.STRING
     },
-    tax_code:{
+    tax_key:{
         type: DataTypes.STRING
     },    
     id_user:{
