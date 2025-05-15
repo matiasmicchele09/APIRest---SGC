@@ -11,7 +11,8 @@ import provincesRoutes from './routes/provinces.routes.js'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-
+import swaggerUI from 'swagger-ui-express';
+import specs from './config/swagger.js';
 const app = express();
 
 //*Llama a la función de asociaciones para establecer las relaciones entre los modelos 
@@ -34,7 +35,9 @@ app.use(cors({
 
 app.use(express.json()); //Cada vez que manden un json a la aplicación voy a poder interpretarlo y voy a poder guardarlo dentro de un req.body
 //Así que cada vez que llame al req.body voy a poder utilizar los datos que el cliente me este enviando
+
 app.use(cookieParser());
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 //* En esta ruta se hace el login y se crea el token
 app.use(authRoutes);

@@ -3,6 +3,25 @@ import { getAll, createCustomers, updateCustomers } from '../controllers/custome
 
 const router = Router();
 
+/**
+ * @swagger
+ * /customers:
+ *   get:
+ *     summary: Returns a list of all customers
+ *     tags: [Customers]
+ *     responses:
+ *       200:
+ *         description: Customers retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 
+ *       404:
+ *         description: Customers not found
+ */
 router.get('/customers', getAll);   
 router.post('/customers', createCustomers);  
 

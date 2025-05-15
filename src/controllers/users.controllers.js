@@ -55,7 +55,7 @@ export const login = async(req, res) =>{
             apellido: user.apellido,
             nombre: user.nombre
         }, SECRET_JWT_KEY, {expiresIn: '1h'});
-
+        
         const {password, ...userData} = user.dataValues;
         res.cookie('access_token', token, {
             httpOnly: true, //Solo se puede acceder al token desde el servidor, no vas a poder acceder al token desde el cliente o desde javascript
