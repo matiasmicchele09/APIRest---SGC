@@ -32,7 +32,7 @@ export const createUsers = async (req, res) =>{
 
 export const login = async(req, res) =>{
     const {email, pass} = req.body;
-    console.log(email, pass);
+    //console.log(email, pass);
     try {
         const user = await Users.findOne({
             where:{
@@ -51,9 +51,7 @@ export const login = async(req, res) =>{
         const token = jwt.sign({
             id: user.id_user,
             email: user.email,
-            id_rol: user.id_rol,
-            apellido: user.apellido,
-            nombre: user.nombre
+            id_rol: user.id_rol,            
         }, SECRET_JWT_KEY, {expiresIn: '1h'});
         
         const {password, ...userData} = user.dataValues;
@@ -71,12 +69,16 @@ export const login = async(req, res) =>{
     }
 }
 
-export const getUser = async (req, res) => {    
+export const getUser = async (req, res) => { 
     
-    const { user }= req.session; //tomamos el user al quue le pusimos la info en el middleware de app.js, req.session.user = data;
+    const {id} = req.params.id;
+    console.log();  
+    
+    
+    //const { user } = req.session; //tomamos el user al que le pusimos la info en el middleware de app.js, req.session.user = data;
     // const token = req.cookies.access_token; 
     // if (!token) return res.status(401).json({message: 'Unauthorized'})  
-    if (!user) return res.status(401).json({message: 'Unauthorized'})          
+   // if (!user) return res.status(401).json({message: 'Unauthorized'})          
     
     try {
         //const user = await Users.findByPk(id);
@@ -86,7 +88,7 @@ export const getUser = async (req, res) => {
         // const data = jwt.verify(token, SECRET_JWT_KEY);         
         const userFound = await Users.findOne({
             where:{
-                id_user: user.id 
+                id_user: req.params.id 
             }
         })
         if (!userFound) return res.status(404).json({message: 'User does not exist'})
@@ -94,7 +96,7 @@ export const getUser = async (req, res) => {
         res.json(userData)        
     } catch (error) {
         //return res.status(500).json({message: error.message})        
-        if (!user) return res.status(500).json({message: 'Internal server error'})  
+         return res.status(500).json({message: 'Internal server error'})  
     }
 }
 
@@ -108,7 +110,7 @@ export const getUsers = async (req, res) => {
         //Genero un arreglo de usuarios y lo envío al cliente    
         const users = await Users.findAll();
         res.json(users)
-        console.log(users)        
+       // console.log(users)        
     } catch (error) {
         return res.status(500).json({message: error.message})
     }

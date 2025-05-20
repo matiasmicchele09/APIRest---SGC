@@ -17,8 +17,8 @@ const app = express();
 
 //*Llama a la función de asociaciones para establecer las relaciones entre los modelos 
 associations();  
-//* Middlewares
 
+//* Middlewares
 app.use(cors({
     origin: function(origin, callback) {
       if (!origin || 'http://localhost:4200/') {
@@ -43,13 +43,14 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use(authRoutes);
 
 //*Middleware para verificar el token para las rutas de la aplicacion
-//app.use(validationToken); //07/04/2025-Lo tengo comentado porque no hace falta que este aca, al tener el guard en el front ya tengo las rutas protegidas. 
-//Al menos para /home. Si dejo descomentado esto me verifica 2 veces la sesion, una en el front y otra en el back. 
+app.use(validationToken);
 
 app.use(usersRoutes);
 app.use(rolesRoutes);
 app.use(customerRoutes);
 app.use(tax_conditionRoutes);
 app.use(provincesRoutes)
+//07/04/2025-Lo tengo comentado porque no hace falta que este aca, al tener el guard en el front ya tengo las rutas protegidas. 
+//Al menos para /home. Si dejo descomentado esto me verifica 2 veces la sesion, una en el front y otra en el back. 
 
 export default app;
