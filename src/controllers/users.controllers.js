@@ -49,7 +49,7 @@ export const login = async(req, res) =>{
         //En la firma (sign) del token, guardo la información que quiero que tenga el token
         //El SECRECT_KEY lo guardo en un archivo .env, para que no se vea en el código
         const token = jwt.sign({
-            id: user.id_user,
+            id_user: user.id_user,
             email: user.email,
             id_rol: user.id_rol,            
         }, SECRET_JWT_KEY, {expiresIn: '1h'});
