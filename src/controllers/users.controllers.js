@@ -118,7 +118,9 @@ export const getUsers = async (req, res) => {
 
 export const updateUser = async(req, res) =>{
     const {id} = req.params;
-    const {email, password, id_rol} = req.body;
+    const {email, password, id_rol, name, surname} = req.body;
+
+    console.log(id,req.body);
     
     try {
         //Busco user
@@ -128,6 +130,8 @@ export const updateUser = async(req, res) =>{
         user.email = email;
         user.password = password;
         user.id_rol = id_rol;
+        user.name = name;
+        user.surname = surname;
         
         //Guardo en la base de datos
         await user.save();
