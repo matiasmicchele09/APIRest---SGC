@@ -120,15 +120,20 @@ export const updateUser = async(req, res) =>{
     const {id} = req.params;
     const {email, password, id_rol, name, surname} = req.body;
 
-    console.log(id,req.body);
+    console.log(id,req.body.password);
+    
     
     try {
         //Busco user
         const user = await Users.findByPk(id);
+    
         
         //Actualizo datos
         user.email = email;
-        user.password = password;
+        if (password !== undefined){
+            const hashPassword = await bcrypt.hash(password, SALT_ROUNDS);
+            user.password = hashPassword;
+        }
         user.id_rol = id_rol;
         user.name = name;
         user.surname = surname;
