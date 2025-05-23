@@ -8,6 +8,7 @@ import { Roles }from './roles.js'
 import { Provinces } from './provinces.js';
 import { Customers } from './customers.js';
 import { Tax_Condition } from './tax_condition.js';
+import { Banks } from './banks.js';
 
 export default function associations() {    
 
@@ -31,10 +32,18 @@ Customers.belongsTo(Provinces,
         targetKey: 'id' 
     }
 );
+
 Customers.belongsTo(Tax_Condition,
     { 
         foreignKey: 'id_tax_condition', 
         targetKey: 'id' 
+    }
+);
+
+Customers.belongsTo(Banks,
+    { 
+        foreignKey: 'id_bank', 
+        targetKey: 'id_bank' 
     }
 );
 
