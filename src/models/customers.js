@@ -56,11 +56,27 @@ export const Customers = sequelize.define('customers',{
     id_province:{
         type: DataTypes.INTEGER
     },
+    id_bank:{
+        type: DataTypes.INTEGER
+    },
+    id_sex:{
+        type: DataTypes.INTEGER
+    },
+    id_type:{
+        type: DataTypes.INTEGER
+    },
+    hasDREI:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    nro_cuenta_DREI:{
+        type: DataTypes.INTEGER,        
+    },  
+    nro_reg_DREI:{
+        type: DataTypes.INTEGER,        
+    },
 },{
     timestamps: false
   }
 
-
 );
-  //la provincia seruía una foreign key a la tabla provincias, pero no la tengo creada, por eso lo comento 
-
