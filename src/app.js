@@ -8,6 +8,7 @@ import rolesRoutes from './routes/roles.routes.js'
 import usersRoutes from './routes/users.routes.js'
 import tax_conditionRoutes from './routes/tax_conditions.routes.js'
 import provincesRoutes from './routes/provinces.routes.js'
+import type_personRoutes from './routes/types_person.routes.js';
 
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -52,6 +53,7 @@ app.use(customerRoutes);
 app.use(tax_conditionRoutes);
 app.use(provincesRoutes)
 app.use(banksRoutes);
+app.use(type_personRoutes)
 //07/04/2025-Lo tengo comentado porque no hace falta que este aca, al tener el guard en el front ya tengo las rutas protegidas. 
 //Al menos para /home. Si dejo descomentado esto me verifica 2 veces la sesion, una en el front y otra en el back. 
 
