@@ -21,19 +21,32 @@ const app = express();
 associations();  
 
 //* Middlewares
+// app.use(cors({
+//     origin: function(origin, callback) {
+//       if (!origin || 'http://localhost:4200/') {
+//         // || origin === 'http://localhost:4200/' debería ser así pero no me lo toma
+//         callback(null, true);
+//       } else {
+//         callback(new Error('CORS not allowed'), false); 
+//       }
+//     },
+//     credentials: true, // Permite el uso de credenciales (cookies, cabeceras de autenticación, etc.)
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+//   }));
 app.use(cors({
-    origin: function(origin, callback) {
-      if (!origin || 'http://localhost:4200/') {
-        // || origin === 'http://localhost:4200/' debería ser así pero no me lo toma
-        callback(null, true);
-      } else {
-        callback(new Error('CORS not allowed'), false); 
-      }
-    },
-    credentials: true, // Permite el uso de credenciales (cookies, cabeceras de autenticación, etc.)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+  origin: function(origin, callback) {
+    const allowedOrigins = ['http://localhost:4200'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'), false); 
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json()); //Cada vez que manden un json a la aplicación voy a poder interpretarlo y voy a poder guardarlo dentro de un req.body
 //Así que cada vez que llame al req.body voy a poder utilizar los datos que el cliente me este enviando

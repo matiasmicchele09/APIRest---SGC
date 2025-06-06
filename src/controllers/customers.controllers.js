@@ -60,28 +60,6 @@ export const updateCustomers = async (req, res) => {
             }
         }
         await Customers.update(updateData, { where: { id } });
-
-        // await Customers.update({
-        //     active, 
-        //     activity,
-        //     address,
-        //     city,
-        //     created_at,
-        //     cuit,
-        //     deactivated_at,
-        //     email,
-        //     id_province,
-        //     id_tax_condition,
-        //     id_user,
-        //     name,
-        //     phone,
-        //     surname,
-        //     tax_key
-        // }, {
-        //     where: {
-        //         id: id
-        //     }
-        // });
         res.json({message: 'Customer updated'});
     } catch (error) {
         return res.status(500).json({message: error.message})
