@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'; 
-import { SECRET_JWT_KEY } from './../config.js';
+import { JWT_SECRET } from './../config.js';
 
 export const validationToken = (req, res, next) => {    
     const token = req.cookies.access_token;    
@@ -9,7 +9,7 @@ export const validationToken = (req, res, next) => {
     }
 
     try {    
-        const data = jwt.verify(token, SECRET_JWT_KEY);               
+        const data = jwt.verify(token, JWT_SECRET);               
         req.user = data;                    
         next() //seguir a la siguiente ruta o middleware
     } catch (error) {        

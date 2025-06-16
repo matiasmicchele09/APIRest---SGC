@@ -1,5 +1,5 @@
 import { Users } from "../models/users.js";
-import { SALT_ROUNDS, SECRET_JWT_KEY } from "../config.js";
+import { SALT_ROUNDS, JWT_SECRET } from "../config.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -51,7 +51,7 @@ export const login = async(req, res) =>{
             id_user: user.id_user,
             email: user.email,
             id_rol: user.id_rol,            
-        }, SECRET_JWT_KEY, {expiresIn: '1h'});
+        }, JWT_SECRET, {expiresIn: '1h'});
         
         const {password, ...userData} = user.dataValues;
         res.cookie('access_token', token, {
