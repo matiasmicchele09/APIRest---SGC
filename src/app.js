@@ -36,7 +36,7 @@ associations();
 //   }));
 app.use(cors({
   origin: function(origin, callback) {
-    const allowedOrigins = ['http://localhost:4200'];
+    const allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:8080'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
