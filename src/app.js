@@ -48,6 +48,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Para garantizar que OPTIONS responde siempre OK:
+app.options('*', cors());
+
 app.use(express.json()); //Cada vez que manden un json a la aplicación voy a poder interpretarlo y voy a poder guardarlo dentro de un req.body
 //Así que cada vez que llame al req.body voy a poder utilizar los datos que el cliente me este enviando
 
@@ -58,9 +61,9 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use(authRoutes);
 
 //*Middleware para verificar el token para las rutas de la aplicacion
+app.use(usersRoutes);
 app.use(validationToken);
 
-app.use(usersRoutes);
 app.use(rolesRoutes);
 app.use(customerRoutes);
 app.use(tax_conditionRoutes);
