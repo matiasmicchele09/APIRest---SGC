@@ -62,10 +62,10 @@ app.use(authRoutes);
 
 //*Middleware para verificar el token para las rutas de la aplicacion
 app.use(usersRoutes);
+app.use(customerRoutes);
 app.use(validationToken);
 
 app.use(rolesRoutes);
-app.use(customerRoutes);
 app.use(tax_conditionRoutes);
 app.use(provincesRoutes)
 app.use(banksRoutes);
