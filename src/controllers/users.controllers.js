@@ -56,8 +56,10 @@ export const login = async(req, res) =>{
         const {password, ...userData} = user.dataValues;
         res.cookie('access_token', token, {
             httpOnly: true, //Solo se puede acceder al token desde el servidor, no vas a poder acceder al token desde el cliente o desde javascript
-            secure: process.env.NODE_ENV === 'production' ? true : false, //Solo se puede acceder al token si la conexión es segura (https)
-            sameSite: 'strict', //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
+            //secure: process.env.NODE_ENV === 'production' ? true : false, //Solo se puede acceder al token si la conexión es segura (https)
+            secure: true,
+            //sameSite: 'strict', //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
+            sameSite: 'none', //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
             maxAge: 1000 * 60 * 60 //la cookie solo tiene validez por una hora
         })
         res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass        
@@ -100,7 +102,12 @@ export const getUser = async (req, res) => {
 }
 
 export const logOut = async(req, res) =>{
-    res.clearCookie('access_token');
+    //res.clearCookie('access_token');
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+        });
     res.json({message: 'Logged out'})
 }
 

@@ -21,5 +21,5 @@ export const sequelize = new Sequelize(DB_URI, {
 
 // Opcional: verificar conexión al arrancar
 sequelize.authenticate()
-  .then(() => console.log(`✅ Sequelize conectado [${ENV}]`))
+  .then(() => console.log(`✅ Sequelize connect [${ENV}]`))
   .catch(err => console.error('❌ Error Sequelize:', err));

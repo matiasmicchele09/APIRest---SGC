@@ -1,4 +1,4 @@
-// //* Archivo para guardar en que puerto se esta ejecutando la aplicación, cual es la dirección de la base de datos
+//* Archivo para guardar en que puerto se esta ejecutando la aplicación, cual es la dirección de la base de datos
 // export const {
 //     PORT = 3000,
 //     SALT_ROUNDS = 10,
@@ -16,7 +16,7 @@ dotenv.config({
   path: path.resolve('.', `.env.${NODE_ENV}`)
 });
 
-// 3) Exporto todas las vars que usa tu app
+// 3) Exporto todas las vars que usa la app
 export const ENV            = NODE_ENV;
 export const PORT           = process.env.PORT     || 3000;
 export const DB_URI         = process.env.DB_URI;
