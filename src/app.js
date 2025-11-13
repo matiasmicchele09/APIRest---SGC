@@ -19,7 +19,7 @@ const app = express();
 const STATIC_ORIGINS = [
   "http://localhost:4200",
   "http://127.0.0.1:8080",
-  "https://nexostudio.vercel.app/auth/login", // <-- reemplazá por tu URL fija de prod en Vercel
+  "https://nexostudio.vercel.app", // <-- reemplazá por tu URL fija de prod en Vercel
   // 'https://tu-dominio.com',  // <-- si tenés dominio propio, agregalo aquí
 ];
 //*Llama a la función de asociaciones para establecer las relaciones entre los modelos
