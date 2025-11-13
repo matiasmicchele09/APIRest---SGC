@@ -67,6 +67,10 @@ app.use(authRoutes);
 
 //*Middleware para verificar el token para las rutas de la aplicacion
 app.use(validationToken);
+
+//Valida si la session esta activa desde el front, esto lo uso en el guard de angular
+app.get("/validateSession", (req, res) => res.json(req.user));
+// Rutas protegidas
 app.use(usersRoutes);
 app.use(customerRoutes);
 
@@ -75,8 +79,6 @@ app.use(tax_conditionRoutes);
 app.use(provincesRoutes);
 app.use(banksRoutes);
 app.use(type_personRoutes);
-//07/04/2025-Lo tengo comentado porque no hace falta que este aca, al tener el guard en el front ya tengo las rutas protegidas.
-//Al menos para /home. Si dejo descomentado esto me verifica 2 veces la sesion, una en el front y otra en el back.
 
 export default app;
 

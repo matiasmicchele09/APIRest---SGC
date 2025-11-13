@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, SALT_ROUNDS } from "../config.js";
+import { cookieOptions } from "../helpers/cookies.js";
 import { Users } from "../models/users.js";
 
 export const createUsers = async (req, res) => {
@@ -59,14 +60,12 @@ export const login = async (req, res) => {
       JWT_SECRET,
       { expiresIn: "1h" }
     );
+    //const isProd = process.env.NODE_ENV === "production";
+    const opts = { ...cookieOptions(req) };
 
     const { password, ...userData } = user.dataValues;
     res.cookie("access_token", token, {
-      httpOnly: true, //Solo se puede acceder al token desde el servidor, no vas a poder acceder al token desde el cliente o desde javascript
-      //secure: process.env.NODE_ENV === 'production' ? true : false, //Solo se puede acceder al token si la conexión es segura (https)
-      secure: true,
-      //sameSite: 'strict', //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
-      sameSite: "none", //Solo se puede acceder al token si la petición es del mismo sitio (mismo dominio)
+      opts,
       maxAge: 1000 * 60 * 60, //la cookie solo tiene validez por una hora
     });
     res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass
@@ -74,22 +73,34 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+// export const logOut = async (req, res) => {
+//   //res.clearCookie('access_token');
+//   res.clearCookie("access_token", {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: "none",
+//   });
+//   res.json({ message: "Logged out" });
+// };
+
+// users.controllers.js
+export const logOut = (req, res) => {
+  const opts = { ...cookieOptions(req) };
+  res.clearCookie("access_token", {
+    ...opts,
+  });
+
+  // Fallback por si algún proxy no respeta clearCookie
+  res.cookie("access_token", "", {
+    ...opts,
+    expires: new Date(0),
+    maxAge: 0,
+  });
+  res.json({ message: "Logged out" });
+};
 
 export const getUser = async (req, res) => {
-  const { id } = req.params.id;
-  console.log();
-
-  //const { user } = req.session; //tomamos el user al que le pusimos la info en el middleware de app.js, req.session.user = data;
-  // const token = req.cookies.access_token;
-  // if (!token) return res.status(401).json({message: 'Unauthorized'})
-  // if (!user) return res.status(401).json({message: 'Unauthorized'})
-
   try {
-    //const user = await Users.findByPk(id);
-    //Ahora lo hacemos con findOne para ver como funciona, pero con findByPk estaba bien
-    //la diferencia entre ambos es que findOne te permite buscar por otros campos, findByPk solo por la pk
-
-    // const data = jwt.verify(token, SECRET_JWT_KEY);
     const userFound = await Users.findOne({
       where: {
         id_user: req.params.id,
@@ -100,19 +111,8 @@ export const getUser = async (req, res) => {
     const { password, ...userData } = userFound.dataValues;
     res.json(userData);
   } catch (error) {
-    //return res.status(500).json({message: error.message})
     return res.status(500).json({ message: "Internal server error" });
   }
-};
-
-export const logOut = async (req, res) => {
-  //res.clearCookie('access_token');
-  res.clearCookie("access_token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
-  res.json({ message: "Logged out" });
 };
 
 export const getUsers = async (req, res) => {
