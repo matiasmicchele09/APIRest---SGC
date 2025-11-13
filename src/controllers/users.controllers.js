@@ -65,7 +65,7 @@ export const login = async (req, res) => {
 
     const { password, ...userData } = user.dataValues;
     res.cookie("access_token", token, {
-      opts,
+      ...opts,
       maxAge: 1000 * 60 * 60, //la cookie solo tiene validez por una hora
     });
     res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass
