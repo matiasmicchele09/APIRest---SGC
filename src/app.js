@@ -41,12 +41,21 @@ function isAllowedOrigin(origin) {
   } catch (_) {}
   return false;
 }
+// const corsOptions = {
+//   origin: (origin, cb) => {
+//     const ok = isAllowedOrigin(origin);
+//     cb(ok ? null : new Error("CORS not allowed"), ok);
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
 const corsOptions = {
   origin: (origin, cb) => {
     const ok = isAllowedOrigin(origin);
     cb(ok ? null : new Error("CORS not allowed"), ok);
   },
-  credentials: true,
+  credentials: false, // ya no hace falta true para cookies
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };

@@ -30,9 +30,11 @@ export const createUsers = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 export const login = async (req, res) => {
+  console.log(req.body);
   const { email, pass } = req.body;
+  console.log(email);
+  console.log(pass);
   try {
     const user = await Users.findOne({
       where: {
@@ -40,6 +42,7 @@ export const login = async (req, res) => {
       },
     });
 
+    console.log(user);
     if (!user) return res.status(404).json({ message: "Usuario no existe" });
 
     //No desencripta la pass del user, sino que encrypta la pass que le pasamos y la compara con la pass encriptada que tiene el user
@@ -51,28 +54,77 @@ export const login = async (req, res) => {
 
     //En la firma (sign) del token, guardo la información que quiero que tenga el token
     //El SECRECT_KEY lo guardo en un archivo .env, para que no se vea en el código
-    const token = jwt.sign(
-      {
-        id_user: user.id_user,
-        email: user.email,
-        id_rol: user.id_rol,
-      },
-      JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const payload = {
+      id_user: user.id_user,
+      email: user.email,
+      id_rol: user.id_rol,
+    };
+
+    console.log(payload);
+    const token = jwt.sign(payload, JWT_SECRET, {
+      expiresIn: "8h",
+    });
     //const isProd = process.env.NODE_ENV === "production";
     const opts = { ...cookieOptions(req) };
 
-    const { password, ...userData } = user.dataValues;
-    res.cookie("access_token", token, {
-      ...opts,
-      maxAge: 1000 * 60 * 60, //la cookie solo tiene validez por una hora
+    // const { password, ...userData } = user.dataValues;
+    // res.cookie("access_token", token, {
+    //   ...opts,
+    //   maxAge: 1000 * 60 * 60, //la cookie solo tiene validez por una hora
+    // });
+    //     const { password, ...userData } = user.dataValues;
+
+    return res.status(200).json({
+      message: "Login exitoso",
+      token, // ACA está la clave
+      user: payload, // opcional, para tener datos básicos en el front
     });
-    res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+// export const login = async (req, res) => {
+//   const { email, pass } = req.body;
+//   try {
+//     const user = await Users.findOne({
+//       where: {
+//         email: email,
+//       },
+//     });
+
+//     if (!user) return res.status(404).json({ message: "Usuario no existe" });
+
+//     //No desencripta la pass del user, sino que encrypta la pass que le pasamos y la compara con la pass encriptada que tiene el user
+//     const isValid = await bcrypt.compare(pass, user.password);
+//     if (!isValid)
+//       return res
+//         .status(401)
+//         .json({ message: "Usuario y/o contraseña incorrectos" });
+
+//     //En la firma (sign) del token, guardo la información que quiero que tenga el token
+//     //El SECRECT_KEY lo guardo en un archivo .env, para que no se vea en el código
+//     const token = jwt.sign(
+//       {
+//         id_user: user.id_user,
+//         email: user.email,
+//         id_rol: user.id_rol,
+//       },
+//       JWT_SECRET,
+//       { expiresIn: "1h" }
+//     );
+//     //const isProd = process.env.NODE_ENV === "production";
+//     const opts = { ...cookieOptions(req) };
+
+//     const { password, ...userData } = user.dataValues;
+//     res.cookie("access_token", token, {
+//       ...opts,
+//       maxAge: 1000 * 60 * 60, //la cookie solo tiene validez por una hora
+//     });
+//     res.json(userData); //Esto es para que no devuelva la pass en el json, tambien podría sacar el id y el rol, pero por ahora saco solo la pass
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
 // export const logOut = async (req, res) => {
 //   //res.clearCookie('access_token');
 //   res.clearCookie("access_token", {
