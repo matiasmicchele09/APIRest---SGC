@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, SALT_ROUNDS } from "../config.js";
-import { cookieOptions } from "../helpers/cookies.js";
 import { Users } from "../models/users.js";
 
 export const createUsers = async (req, res) => {
@@ -65,7 +64,7 @@ export const login = async (req, res) => {
       expiresIn: "8h",
     });
     //const isProd = process.env.NODE_ENV === "production";
-    const opts = { ...cookieOptions(req) };
+    //const opts = { ...cookieOptions(req) };
 
     // const { password, ...userData } = user.dataValues;
     // res.cookie("access_token", token, {
@@ -136,19 +135,9 @@ export const login = async (req, res) => {
 // };
 
 // users.controllers.js
-export const logOut = (req, res) => {
-  const opts = { ...cookieOptions(req) };
-  res.clearCookie("access_token", {
-    ...opts,
-  });
 
-  // Fallback por si algún proxy no respeta clearCookie
-  res.cookie("access_token", "", {
-    ...opts,
-    expires: new Date(0),
-    maxAge: 0,
-  });
-  res.json({ message: "Logged out" });
+export const logOut = (req, res) => {
+  return res.json({ message: "Logout OK" });
 };
 
 export const getUser = async (req, res) => {

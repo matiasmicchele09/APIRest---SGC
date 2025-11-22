@@ -10,7 +10,7 @@ import tax_conditionRoutes from "./routes/tax_conditions.routes.js";
 import type_personRoutes from "./routes/types_person.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 
-import cookieParser from "cookie-parser";
+//import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import swaggerUI from "swagger-ui-express";
@@ -28,7 +28,7 @@ associations();
 //* Middlewares
 
 app.set("trust proxy", 1); // importante en Render para cookies "secure"
-app.use(cookieParser());
+//app.use(cookieParser());
 function isAllowedOrigin(origin) {
   if (!origin) return true; // Postman/cURL o navegadores sin Origin en same-site
   if (STATIC_ORIGINS.includes(origin)) return true;
@@ -41,21 +41,13 @@ function isAllowedOrigin(origin) {
   } catch (_) {}
   return false;
 }
-// const corsOptions = {
-//   origin: (origin, cb) => {
-//     const ok = isAllowedOrigin(origin);
-//     cb(ok ? null : new Error("CORS not allowed"), ok);
-//   },
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// };
+
 const corsOptions = {
   origin: (origin, cb) => {
     const ok = isAllowedOrigin(origin);
     cb(ok ? null : new Error("CORS not allowed"), ok);
   },
-  credentials: false, // ya no hace falta true para cookies
+  credentials: false, // En TRUE si usara cookies
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
