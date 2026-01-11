@@ -22,6 +22,7 @@ import path from "path";
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 // Solo cargamos .env.* si NO estamos en Render (o si estamos en local)
+// El process.env.RENDER solo existe en render, por eso localmente va a ser false
 if (!process.env.RENDER) {
   dotenv.config({
     path: path.resolve(".", `.env.${NODE_ENV}`),

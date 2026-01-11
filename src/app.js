@@ -36,7 +36,11 @@ function isAllowedOrigin(origin) {
   // Permitir previews de Vercel: https://<hash>-<project>.vercel.app
   try {
     const u = new URL(origin);
-    if (u.protocol === "https:" && u.hostname.endsWith(".vercel.app"))
+    if (
+      u.protocol === "https:" &&
+      u.hostname.endsWith(".vercel.app") &&
+      u.hostname.includes("matias9")
+    )
       return true;
   } catch (_) {}
   return false;
