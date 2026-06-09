@@ -1,82 +1,102 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../database/db.js'
+import { DataTypes } from "sequelize";
+import { sequelize } from "../database/db.js";
+
+function normalizeCuit(value) {
+  if (typeof value !== "string") return value;
+  return value.replace(/\D/g, "");
+}
 
 //Users ponele que sería el esquema
-export const Customers = sequelize.define('customers',{
-    id:{
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,  
+export const Customers = sequelize.define(
+  "customers",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     name: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
-    active:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
-    created_at:{
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
-    }, 
-    deactivated_at:{
-        type: DataTypes.DATE,
-        defaultValue: null
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
-    surname:{
-        type: DataTypes.STRING
+    deactivated_at: {
+      type: DataTypes.DATE,
+      defaultValue: null,
     },
-    email:{
-        type: DataTypes.STRING
+    surname: {
+      type: DataTypes.STRING,
     },
-    phone:{
-        type: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
     },
-    address:{
-        type: DataTypes.STRING
+    phone: {
+      type: DataTypes.STRING,
     },
-    city:{
-        type: DataTypes.STRING
+    address: {
+      type: DataTypes.STRING,
     },
-    tax_key:{
-        type: DataTypes.STRING
-    },    
-    id_user:{
-        type: DataTypes.INTEGER
-    },   
-    activity:{
-        type: DataTypes.STRING
+    city: {
+      type: DataTypes.STRING,
     },
-    cuit:{
-        type: DataTypes.STRING
+    tax_key: {
+      type: DataTypes.STRING,
     },
-    id_tax_condition:{
-        type: DataTypes.INTEGER
+    id_user: {
+      type: DataTypes.INTEGER,
     },
-    id_province:{
-        type: DataTypes.INTEGER
+    activity: {
+      type: DataTypes.STRING,
     },
-    id_bank:{
-        type: DataTypes.INTEGER
+    cuit: {
+      type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue("cuit", normalizeCuit(value));
+      },
     },
-    id_sex:{
-        type: DataTypes.INTEGER
+    observations: {
+      type: DataTypes.TEXT,
     },
-    id_type:{
-        type: DataTypes.INTEGER
+    id_tax_condition: {
+      type: DataTypes.INTEGER,
     },
-    hasDREI:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+    id_province: {
+      type: DataTypes.INTEGER,
     },
-    nro_cuenta_DREI:{
-        type: DataTypes.INTEGER,        
-    },  
-    nro_reg_DREI:{
-        type: DataTypes.INTEGER,        
+    id_bank: {
+      type: DataTypes.INTEGER,
     },
-},{
-    timestamps: false
-  }
-
+    id_sex: {
+      type: DataTypes.INTEGER,
+    },
+    id_type: {
+      type: DataTypes.INTEGER,
+    },
+    hasDREI: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    nro_cuenta_DREI: {
+      type: DataTypes.INTEGER,
+    },
+    nro_reg_DREI: {
+      type: DataTypes.INTEGER,
+    },
+  },
+  {
+    timestamps: false,
+    indexes: [
+      {
+        unique: true,
+        name: "customers_id_user_cuit_unique",
+        fields: ["id_user", "cuit"],
+      },
+    ],
+  },
 );
